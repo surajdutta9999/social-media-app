@@ -5,6 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const SuggestedUsers = () => {
     const { suggestedUsers } = useSelector(store => store.auth);
+
+    if (!suggestedUsers || suggestedUsers.length === 0) {
+        return <p className='text-gray-600'>No suggestions available at the moment.</p>;
+    }
+
     return (
         <div className='my-10'>
             <div className='flex items-center justify-between text-sm'>
