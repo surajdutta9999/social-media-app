@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
+import React, { useEffect, useState } from 'react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Login = () => {
         password: ""
     });
     const [loading, setLoading] = useState(false);
-    const {user} = useSelector(store=>store.auth);
+    const { user } = useSelector(store => store.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -40,20 +40,19 @@ const Login = () => {
                     email: "",
                     password: ""
                 });
+            } else {
+                toast.error(res.data.message);
             }
         } catch (error) {
-            console.log(error);
-            toast.error(error.response.data.message);
+            console.error(error);
+            const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
     }
 
-    useEffect(()=>{
-        if(user){
-            navigate("/");
-        }
-    },[])
+
     return (
         <div className='flex items-center w-screen h-screen justify-center'>
             <form onSubmit={signupHandler} className='shadow-lg flex flex-col gap-5 p-8'>
@@ -98,4 +97,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;

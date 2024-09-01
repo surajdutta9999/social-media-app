@@ -59,7 +59,7 @@ function App() {
         query: {
           userId: user?._id
         },
-        transports: ['websocket']
+        transports: ['websocket', 'polling']
       });
       dispatch(setSocket(socketio));
 

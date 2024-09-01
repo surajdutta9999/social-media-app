@@ -30,18 +30,22 @@ const LeftSidebar = () => {
 
   const logoutHandler = async () => {
     try {
-        const res = await axios.get('http://localhost:8000/api/v1/user/logout', { withCredentials: true });
-        if (res.data.success) {
-            dispatch(setAuthUser(null));
-            dispatch(setSelectedPost(null));
-            dispatch(setPosts([]));
-            navigate("/login");
-            toast.success(res.data.message);
-        }
+      const res = await axios.get("http://localhost:8000/api/v1/user/logout", {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        dispatch(setAuthUser(null));
+        dispatch(setSelectedPost(null));
+        dispatch(setPosts([]));
+        navigate("/login");
+        toast.success(res.data.message);
+      }
     } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to log out. Please try again.");
+      toast.error(
+        error.response?.data?.message || "Failed to log out. Please try again."
+      );
     }
-}
+  };
 
   const sidebarHandler = (textType) => {
     if (textType === "Logout") {

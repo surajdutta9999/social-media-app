@@ -1,12 +1,14 @@
 import { setUserProfile } from "@/redux/authSlice";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const useGetUserProfile = (userId) => {
   const dispatch = useDispatch();
-  // const [userProfile, setUserProfile] = useState(null);
+
   useEffect(() => {
+    if (!userId) return;
+
     const fetchUserProfile = async () => {
       try {
         const res = await axios.get(
@@ -17,10 +19,12 @@ const useGetUserProfile = (userId) => {
           dispatch(setUserProfile(res.data.user));
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching user profile:", error);
       }
     };
+
     fetchUserProfile();
-  }, [userId]);
+  }, [userId, dispatch]);
 };
+
 export default useGetUserProfile;
