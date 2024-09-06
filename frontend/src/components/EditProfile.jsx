@@ -88,7 +88,7 @@ const EditProfile = () => {
     try {
       dispatchState({ type: "SET_LOADING", payload: true });
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/profile/edit",
+        "https://social-media-app-5ay6.onrender.com/api/v1/user/profile/edit",
         formData,
         {
           headers: {

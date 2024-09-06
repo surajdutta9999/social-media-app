@@ -15,7 +15,7 @@ const SuggestedUsers = () => {
     try {
       const action = isFollowing ? "Unfollow" : "follow";
       const response = await axios.post(
-        `http://localhost:8000/api/v1/user/followOrUnfollow/${user_id}/${action}`,
+        `https://social-media-app-5ay6.onrender.com/api/v1/user/followOrUnfollow/${user_id}/${action}`,
         {},
         { withCredentials: true }
       );
