@@ -1,15 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import axios from "axios";
+import { setSuggestedUsers } from "@/redux/authSlice";
 
 const SuggestedUsers = () => {
-  const { suggestedUsers } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const isFollowing = false;
+  // const [suggestedUsers, setSuggestedUsers] = useState();
+  const { suggestedUsers } = useSelector(( store ) => store.auth);
+
+  const handleFollow = async (user_id) => {
+    try {
+      const action = isFollowing ? "Unfollow" : "follow";
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/user/followOrUnfollow/${user_id}/${action}`,
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        const updatedUsers = suggestedUsers.map((user) =>
+          user._id === userId ? { ...user, isFollowing: true } : user
+        );
+        dispatch(setSuggestedUsers(updatedUsers)); 
+      }
+    } catch (error) {
+      console.error("Error following user:", error);
+    }
+  };
 
   if (!suggestedUsers || suggestedUsers.length === 0) {
-    return (
-      <p className="text-gray-600">No suggestions available at the moment.</p>
-    );
+    return <p className="text-gray-600">No suggestions available at the moment.</p>;
   }
 
   return (
@@ -40,9 +63,15 @@ const SuggestedUsers = () => {
                 </span>
               </div>
             </div>
-            <span className="text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#3495d6]">
-              Follow
-            </span>
+            <button
+              className={`text-xs font-bold cursor-pointer ${
+                user.isFollowing ? "text-gray-400" : "text-[#3BADF8] hover:text-[#3495d6]"
+              }`}
+              onClick={() => handleFollow(user._id)}
+              disabled={user.isFollowing}
+            >
+              {user.isFollowing ? "Following" : "Follow"}
+            </button>
           </div>
         );
       })}

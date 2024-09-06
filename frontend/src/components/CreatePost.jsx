@@ -77,7 +77,7 @@ const CreatePost = ({ open, setOpen }) => {
           </Avatar>
           <div>
             <h1 className="font-semibold text-xs">{user?.username}</h1>
-            <span className="text-gray-600 text-xs">Bio here...</span>
+            <span className="text-gray-600 text-xs">{user?.bio || "Bio here..."}</span>
           </div>
         </div>
         <Textarea

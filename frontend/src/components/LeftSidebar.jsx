@@ -82,7 +82,16 @@ const LeftSidebar = () => {
   return (
     <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
       <div className="flex flex-col">
-        <h1 className="my-8 pl-3 font-bold text-xl">LOGO</h1>
+      <div className="flex flex-row items-center gap-2 m-2">
+            <Avatar className="w-10 h-10">
+              <AvatarImage
+                src="https://res.cloudinary.com/dc5pebw8y/image/upload/v1724150534/sozchmzsxb6cmmhzyt0y.png"
+                alt="@shadcn"
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <h1 className="text-bold text-xl text-center">Fine</h1>
+          </div>
         <div>
           {sidebarItems.map((item, index) => {
             return (
