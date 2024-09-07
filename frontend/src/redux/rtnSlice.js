@@ -13,12 +13,10 @@ const rtnSlice = createSlice({
 
       if (action.payload.type === 'like') {
         if (existingIndex === -1) {
-          // Only add if the notification doesn't already exist
           state.likeNotification.push(action.payload);
         }
       } else if (action.payload.type === 'dislike') {
         if (existingIndex !== -1) {
-          // Remove the notification for the userId
           state.likeNotification.splice(existingIndex, 1);
         }
       }
