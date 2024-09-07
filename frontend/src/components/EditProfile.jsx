@@ -69,7 +69,11 @@ const EditProfile = () => {
       }
       const dataUrl = await readFileAsDataURL(file);
       dispatchState({ type: "SET_IMAGE_PREVIEW", payload: dataUrl });
-      dispatchState({ type: "SET_FIELD", field: "profilePicture", value: file });
+      dispatchState({
+        type: "SET_FIELD",
+        field: "profilePicture",
+        value: file,
+      });
     }
   };
 
@@ -88,7 +92,7 @@ const EditProfile = () => {
     try {
       dispatchState({ type: "SET_LOADING", payload: true });
       const res = await axios.post(
-        "https://social-media-app-5ay6.onrender.com/api/v1/user/profile/edit",
+        "https://social-media-app-kyme.onrender.com/api/v1/user/profile/edit",
         formData,
         {
           headers: {

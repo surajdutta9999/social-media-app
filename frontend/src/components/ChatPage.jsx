@@ -20,7 +20,7 @@ const ChatPage = () => {
   const sendMessageHandler = async (receiverId) => {
     try {
       const res = await axios.post(
-        `https://social-media-app-5ay6.onrender.com/api/v1/message/send/${receiverId}`,
+        `https://social-media-app-kyme.onrender.com/api/v1/message/send/${receiverId}`,
         { textMessage },
         {
           headers: {
@@ -53,7 +53,8 @@ const ChatPage = () => {
           {suggestedUsers.map((suggestedUser) => {
             const isOnline = onlineUsers.includes(suggestedUser?._id);
             return (
-              <div key={suggestedUser._id}
+              <div
+                key={suggestedUser._id}
                 onClick={() => dispatch(setSelectedUser(suggestedUser))}
                 className="flex gap-3 items-center p-3 hover:bg-gray-50 cursor-pointer"
               >

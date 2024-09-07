@@ -14,7 +14,7 @@ import { Badge } from "./ui/badge";
 const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.auth);
   const { posts } = useSelector((store) => store.post);
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
@@ -36,7 +36,7 @@ const Post = ({ post }) => {
     try {
       const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `https://social-media-app-5ay6.onrender.com/api/v1/post/${post._id}/${action}`,
+        `https://social-media-app-kyme.onrender.com/api/v1/post/${post._id}/${action}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -70,7 +70,7 @@ const Post = ({ post }) => {
     setLoading(true);
     try {
       const res = await axios.post(
-        `https://social-media-app-5ay6.onrender.com/api/v1/post/${post._id}/comment`,
+        `https://social-media-app-kyme.onrender.com/api/v1/post/${post._id}/comment`,
         { text },
         {
           headers: { "Content-Type": "application/json" },
@@ -99,7 +99,7 @@ const Post = ({ post }) => {
   const deletePostHandler = async () => {
     try {
       const res = await axios.delete(
-        `https://social-media-app-5ay6.onrender.com/api/v1/post/delete/${post?._id}`,
+        `https://social-media-app-kyme.onrender.com/api/v1/post/delete/${post?._id}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -121,7 +121,7 @@ const Post = ({ post }) => {
   const bookmarkHandler = async () => {
     try {
       const res = await axios.get(
-        `https://social-media-app-5ay6.onrender.com/api/v1/post/${post?._id}/bookmark`,
+        `https://social-media-app-kyme.onrender.com/api/v1/post/${post?._id}/bookmark`,
         { withCredentials: true }
       );
       if (res.data.success) {

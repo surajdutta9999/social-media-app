@@ -14,14 +14,14 @@ const useGetUserProfile = (userId) => {
     if (!userId) return;
 
     const source = axios.CancelToken.source();
-    
+
     const fetchUserProfile = async () => {
       setIsLoading(true);
       setError(null);
       try {
         console.log("Fetching user profile...");
         const res = await axios.get(
-          `https://social-media-app-5ay6.onrender.com/api/v1/user/${userId}/profile`,
+          `https://social-media-app-kyme.onrender.com/api/v1/user/${userId}/profile`,
           {
             withCredentials: true,
             cancelToken: source.token,

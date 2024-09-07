@@ -40,7 +40,7 @@ const CreatePost = ({ open, setOpen }) => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "https://social-media-app-5ay6.onrender.com/api/v1/post/addpost",
+        "https://social-media-app-kyme.onrender.com/api/v1/post/addpost",
         formData,
         {
           headers: {
@@ -77,7 +77,9 @@ const CreatePost = ({ open, setOpen }) => {
           </Avatar>
           <div>
             <h1 className="font-semibold text-xs">{user?.username}</h1>
-            <span className="text-gray-600 text-xs">{user?.bio || "Bio here..."}</span>
+            <span className="text-gray-600 text-xs">
+              {user?.bio || "Bio here..."}
+            </span>
           </div>
         </div>
         <Textarea
