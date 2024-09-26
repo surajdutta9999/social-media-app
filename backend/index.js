@@ -3,6 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
+import userRouter from "./routes/user.route.js";
+import messageRouter from "./routes/message.route.js";
+import postRouter from "./routes/post.route.js";
 
 dotenv.config({});
 const app = express();
@@ -12,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.get("/", (_, res) => {
   return res.status(200).json({
     message: "Server is running",
-    success: true
+    success: true,
   });
 });
 
@@ -25,8 +28,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/message", messageRouter);
+app.use("/api/v1/post", postRouter);
 
 app.listen(PORT, async () => {
- connectDB();
+  connectDB();
   console.log(`Server listen at port ${PORT}`);
 });

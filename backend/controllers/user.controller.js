@@ -116,6 +116,7 @@ export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
     let user = await User.findById(userId)
+      .select("-password")
       .populate({ path: "posts", createdAt: -1 })
       .populate("bookmarks");
     return res.status(200).json({
@@ -132,6 +133,15 @@ export const editProfile = async (req, res) => {
     const userId = req.id;
     const { bio, gender } = req.body;
     const profilePicture = req.file;
+
+    // Basic validation
+    if (gender && !['male', 'female'].includes(gender)) {
+      return res.status(400).json({
+        message: "Invalid gender value",
+        success: false,
+      });
+    }
+
     let cloudResponse;
 
     if (profilePicture) {
@@ -146,16 +156,24 @@ export const editProfile = async (req, res) => {
         success: false,
       });
     }
-    if (bio) user.bio = bio;
+
+    if (bio !== undefined) user.bio = bio;
     if (gender) user.gender = gender;
     if (profilePicture) user.profilePicture = cloudResponse.secure_url;
 
     await user.save();
 
     return res.status(200).json({
-      message: "Profile updated.",
+      message: "Profile updated successfully.",
       success: true,
-      user,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        bio: user.bio,
+        gender: user.gender,
+      },
     });
   } catch (error) {
     console.error("Profile update failed:", error);
