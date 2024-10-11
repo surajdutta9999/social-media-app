@@ -69,7 +69,7 @@ const Signup = () => {
           <div className="flex flex-col items-center justify-between">
             <Avatar className="w-12 h-12">
               <AvatarImage
-                src="https://res.cloudinary.com/dc5pebw8y/image/upload/v1724150534/sozchmzsxb6cmmhzyt0y.png"
+                src=""
                 alt="@shadcn"
               />
               <AvatarFallback>CN</AvatarFallback>

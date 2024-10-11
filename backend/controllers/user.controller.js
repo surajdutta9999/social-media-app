@@ -134,7 +134,8 @@ export const editProfile = async (req, res) => {
     const { bio, gender } = req.body;
     const profilePicture = req.file;
 
-    // Basic validation
+    console.log("Received data:", { userId, bio, gender, profilePicture: !!profilePicture });
+
     if (gender && !['male', 'female'].includes(gender)) {
       return res.status(400).json({
         message: "Invalid gender value",
@@ -145,8 +146,18 @@ export const editProfile = async (req, res) => {
     let cloudResponse;
 
     if (profilePicture) {
-      const fileUri = getDataUri(profilePicture);
-      cloudResponse = await cloudinary.uploader.upload(fileUri);
+      try {
+        const fileUri = getDataUri(profilePicture);
+        cloudResponse = await cloudinary.uploader.upload(fileUri);
+        console.log("Cloudinary response:", cloudResponse);
+      } catch (cloudinaryError) {
+        console.error("Cloudinary upload error:", cloudinaryError);
+        return res.status(500).json({
+          message: "Error uploading profile picture",
+          success: false,
+          error: cloudinaryError.message,
+        });
+      }
     }
 
     const user = await User.findById(userId).select("-password");
@@ -159,9 +170,10 @@ export const editProfile = async (req, res) => {
 
     if (bio !== undefined) user.bio = bio;
     if (gender) user.gender = gender;
-    if (profilePicture) user.profilePicture = cloudResponse.secure_url;
+    if (cloudResponse) user.profilePicture = cloudResponse.secure_url;
 
     await user.save();
+
 
     return res.status(200).json({
       message: "Profile updated successfully.",
@@ -180,6 +192,7 @@ export const editProfile = async (req, res) => {
     return res.status(500).json({
       message: "An error occurred while updating the profile.",
       success: false,
+      error: error.message,
     });
   }
 };
