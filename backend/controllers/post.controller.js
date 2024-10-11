@@ -10,7 +10,7 @@ export const addNewPost = async (req, res) => {
     const image = req.file;
     const authorId = req.id;
 
-    if (!image) return res.status(400).json({ message: 'Image required' });
+    if (!image) return res.status(400).json({ message: 'Image required', success: false });
 
     const optimizedImageBuffer = await sharp(image.buffer)
       .resize({ width: 800, height: 800, fit: 'inside' })
@@ -39,7 +39,8 @@ export const addNewPost = async (req, res) => {
     })
 
   } catch (error) {
-    console.log(error);
+    console.error("Error adding new post:", error);
+    res.status(500).json({ message: 'Server error while creating post', success: false });
   }
 }
 export const getAllPost = async (req, res) => {

@@ -8,14 +8,14 @@ import { setSuggestedUsers } from "@/redux/authSlice";
 const SuggestedUsers = () => {
   const dispatch = useDispatch();
   const isFollowing = false;
-  // const [suggestedUsers, setSuggestedUsers] = useState();
+  const [suggestedUsers, setSuggestedUsers] = useState();
   const { suggestedUsers } = useSelector((store) => store.auth);
 
   const handleFollow = async (user_id) => {
     try {
       const action = isFollowing ? "Unfollow" : "follow";
       const response = await axios.post(
-        `https://social-media-app-kyme.onrender.com/api/v1/user/followOrUnfollow/${user_id}/${action}`,
+        `http://localhost:8000/api/v1/user/followOrUnfollow/${user_id}/${action}`,
         {},
         { withCredentials: true }
       );

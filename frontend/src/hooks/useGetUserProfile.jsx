@@ -21,7 +21,7 @@ const useGetUserProfile = (userId) => {
       try {
         console.log("Fetching user profile...");
         const res = await axios.get(
-          `https://social-media-app-kyme.onrender.com/api/v1/user/${userId}/profile`,
+          `http://localhost:8000/api/v1/user/${userId}/profile`,
           {
             withCredentials: true,
             cancelToken: source.token,

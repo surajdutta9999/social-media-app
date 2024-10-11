@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "@/redux/postSlice";
+import PropTypes from 'prop-types';
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const CreatePost = ({ open, setOpen }) => {
   const imageRef = useRef();
@@ -30,17 +32,29 @@ const CreatePost = ({ open, setOpen }) => {
   };
 
   const createPostHandler = async (e) => {
+    if (!user) {
+      toast.error("You must be logged in to create a post.");
+      return;
+    }
+
     if (!caption && !imagePreview) {
       toast.error("Please add a caption or select an image.");
       return;
     }
+
     const formData = new FormData();
     formData.append("caption", caption);
     if (imagePreview) formData.append("image", file);
+
+    console.log("FormData entries:");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
     try {
       setLoading(true);
       const res = await axios.post(
-        "https://social-media-app-kyme.onrender.com/api/v1/post/addpost",
+        "http://localhost:8000/api/v1/post/addpost",
         formData,
         {
           headers: {
@@ -53,11 +67,15 @@ const CreatePost = ({ open, setOpen }) => {
         dispatch(setPosts([res.data.post, ...posts]));
         toast.success(res.data.message);
         setOpen(false);
+        setCaption("");
+        setFile("");
+        setImagePreview("");
       }
     } catch (error) {
+      console.error("Error creating post:", error.response?.data || error.message);
       const errorMessage =
         error.response?.data?.message ||
-        "Something went wrong. Please try again later.";
+        "An error occurred while creating the post. Please try again.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -65,8 +83,11 @@ const CreatePost = ({ open, setOpen }) => {
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} aria-label="Create New Post">
       <DialogContent onInteractOutside={() => setOpen(false)}>
+      <VisuallyHidden>
+      <DialogTitle>Create New Post</DialogTitle>
+    </VisuallyHidden>
         <DialogHeader className="text-center font-semibold">
           Create New Post
         </DialogHeader>
@@ -87,6 +108,7 @@ const CreatePost = ({ open, setOpen }) => {
           onChange={(e) => setCaption(e.target.value)}
           className="focus-visible:ring-transparent border-none"
           placeholder="Write a caption..."
+          aria-label="Post caption"
         />
         {imagePreview && (
           <div className="w-full h-64 flex items-center justify-center">
@@ -102,12 +124,14 @@ const CreatePost = ({ open, setOpen }) => {
           type="file"
           className="hidden"
           onChange={fileChangeHandler}
+          aria-label="Select image for post"
         />
         <Button
           onClick={() => imageRef.current.click()}
           className={`w-fit mx-auto ${
             imagePreview ? "bg-[#F50057]" : "bg-[#0095F6]"
           } hover:bg-[#258bcf]`}
+          aria-label={imagePreview ? "Change Image" : "Select image from computer"}
         >
           {imagePreview ? "Change Image" : "Select from computer"}
         </Button>
@@ -123,6 +147,7 @@ const CreatePost = ({ open, setOpen }) => {
               onClick={createPostHandler}
               type="submit"
               className="w-full"
+              aria-label="Create post"
             >
               Post
             </Button>
@@ -130,6 +155,11 @@ const CreatePost = ({ open, setOpen }) => {
       </DialogContent>
     </Dialog>
   );
+};
+
+CreatePost.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
 };
 
 export default CreatePost;
