@@ -58,7 +58,7 @@ const Signup = () => {
       navigate("/");
     }
   }, [user]);
-  
+
   return (
     <div className="flex items-center w-screen h-screen justify-center">
       <form
@@ -68,10 +68,7 @@ const Signup = () => {
         <div className="my-4">
           <div className="flex flex-col items-center justify-between">
             <Avatar className="w-12 h-12">
-              <AvatarImage
-                src=""
-                alt="@shadcn"
-              />
+              <AvatarImage src="" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <p className="text-sm text-center">Login to use our website</p>
