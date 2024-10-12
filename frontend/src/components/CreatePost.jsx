@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader } from "./ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
@@ -19,6 +19,14 @@ const CreatePost = ({ open, setOpen }) => {
   const { user } = useSelector((store) => store.auth);
   const { posts } = useSelector((store) => store.post);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!open) {
+      setCaption("");
+      setFile("");
+      setImagePreview("");
+    }
+  }, [open]);
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files?.[0];
@@ -53,6 +61,9 @@ const CreatePost = ({ open, setOpen }) => {
         dispatch(setPosts([res.data.post, ...posts]));
         toast.success(res.data.message);
         setOpen(false);
+        setCaption("");
+        setFile("");
+        setImagePreview("");
       }
     } catch (error) {
       const errorMessage =

@@ -76,7 +76,10 @@ const EditProfile = () => {
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      const errorMessage = error.response?.data?.message || error.message || "An unknown error occurred";
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred";
       toast.error(`Failed to update profile: ${errorMessage}`);
     } finally {
       setLoading(false);

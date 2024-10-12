@@ -68,10 +68,13 @@ const Signup = () => {
         <div className="my-4">
           <div className="flex flex-col items-center justify-between">
             <Avatar className="w-12 h-12">
-              <AvatarImage src="" alt="@shadcn" />
+              <AvatarImage
+                src="https://res.cloudinary.com/dc5pebw8y/image/upload/v1724150534/sozchmzsxb6cmmhzyt0y.png"
+                alt="@shadcn"
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p className="text-sm text-center">Login to use our website</p>
+            <p className="text-sm text-center">Signup to use our website</p>
           </div>
         </div>
         <div>
