@@ -7,17 +7,13 @@ import userRouter from "./routes/user.route.js";
 import messageRouter from "./routes/message.route.js";
 import postRouter from "./routes/post.route.js";
 import { app, server } from "./socket/socket.js";
+import path from "path";
 
 dotenv.config({});
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (_, res) => {
-  return res.status(200).json({
-    message: "Server is running",
-    success: true,
-  });
-});
+const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,6 +27,11 @@ app.use(cors(corsOptions));
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/post", postRouter);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+app.get("*", (req,res)=>{
+  res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+})
 
 server.listen(PORT, async () => {
   connectDB();
